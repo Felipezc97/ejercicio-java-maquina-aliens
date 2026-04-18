@@ -10,6 +10,7 @@ public class Alien {
 	private double precioExtremidad;
 	private double precioOjo;
 	private double precioCuerpo;
+	private double precioTotal;
 	
 	public Alien (int tamanio, String color) {
 		if (tamanio < 5) {
@@ -24,6 +25,7 @@ public class Alien {
 		this.precioCuerpo = 0.20 * this.tamanio;
 		this.precioExtremidad = 0.10 * this.tamanio;
 		this.precioOjo = 0.05 * this.tamanio;
+		this.precioTotal = 0.0;
 	}
 
 	public int getTamanio() {
@@ -57,6 +59,10 @@ public class Alien {
 	public double getPrecioCuerpo() {
 		return precioCuerpo;
 	}
+	
+	public double getPrecioTotal() {
+		return precioTotal;
+	}
 
 	@Override
 	public String toString() {
@@ -70,6 +76,63 @@ public class Alien {
 		System.out.println(this.toString());
 	}
 	
+	public void imprimir2() {
+		System.out.println("tamanio: " + tamanio + ", color: " + color);
+	}
+	
+	public void imprimir3() {
+		System.out.println("tamanio: " + tamanio + ", color: " + color + ", numeroOjos: " + numeroOjos + ", numeroBrazos: "
+				+ numeroBrazos + ", numeroPies: " + numeroPies);
+	}
+	
+	private int contarExtremidadesTotales() {
+		return this.numeroBrazos + this.numeroPies;
+	}
+	
+	public boolean agregarBrazos(int brazosAgregados) {
+		if (contarExtremidadesTotales() + brazosAgregados <= 10) {
+			this.numeroBrazos += brazosAgregados;
+			calcularPrecioTotal();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean agregarPies(int piesAgregados) {
+		if (contarExtremidadesTotales() + piesAgregados <= 10) {
+			this.numeroPies += piesAgregados;
+			calcularPrecioTotal();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean agregarOjos(int ojosAgregados) {
+		int limitePermitido = 0;
+		if (this.tamanio <= 10) {
+			limitePermitido = 3;
+		} else if (this.tamanio > 10 && this.tamanio <= 20) {
+			limitePermitido = 5;
+		} else {
+			limitePermitido = 7;
+		}
+		
+		if (this.numeroOjos + ojosAgregados <= limitePermitido) {
+			this.numeroOjos += ojosAgregados;
+			calcularPrecioTotal();
+			return true;
+		}
+		return false;
+	}
+	
+	public void calcularPrecioTotal() {
+		double precioTotal = 0.0;
+		precioTotal = this.precioCuerpo
+				+ this.numeroBrazos * this.precioExtremidad
+				+ this.numeroPies * this.precioExtremidad
+				+ this.numeroOjos * this.precioOjo;
+		this.precioTotal = precioTotal;
+	}
 	
 
 }
